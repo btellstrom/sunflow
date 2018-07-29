@@ -33,7 +33,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * This class provides a static method for loading files in the Sunflow scene
@@ -980,10 +980,21 @@ public class SCNewParser implements SceneParser {
             int np = p.getNextInt();
             float[] points = parseFloatArray(np * 3);
             geometry.setPoints(points);
-            // parse triangle indices
-            p.checkNextToken("triangles");
-            int nt = p.getNextInt();
-            geometry.setTriangles(parseIntArray(nt * 3));
+
+            int nt = 0;
+
+            if (p.peekNextToken("triangles")) {
+                // parse triangle indices
+                //p.checkNextToken("triangles");
+                nt = p.getNextInt();
+                geometry.setTriangles(parseIntArray(nt * 3));
+            } else if (p.peekNextToken("faces")) {
+                // parse faces indices
+                //p.checkNextToken("faces");
+                nt = p.getNextInt();
+                geometry.setTriangles(parseFacesArray(nt));
+            }
+
             // parse normals
             p.checkNextToken("normals");
             if (p.peekNextToken("vertex")) {
@@ -1250,7 +1261,7 @@ public class SCNewParser implements SceneParser {
 
     private TransformParameter checkParseTransform() throws ParserException, IOException {
         TransformParameter transformParameter = new TransformParameter();
-        if(p.peekNextToken("transform")) {
+        if (p.peekNextToken("transform")) {
             if (p.peekNextToken("steps")) {
                 int n = p.getNextInt();
 
@@ -1534,6 +1545,25 @@ public class SCNewParser implements SceneParser {
         for (int i = 0; i < size; i++) {
             data[i] = p.getNextInt();
         }
+        return data;
+    }
+
+    private int[] parseFacesArray(int faces) throws IOException {
+        List<Integer> list = new ArrayList<>();
+
+        while (true) {
+            String token = p.getNextToken();
+
+            if (!token.matches("\\d+")) {
+                p.moveToLastToken();
+                break;
+            } else {
+                int value = Integer.parseInt(token);
+                list.add(value);
+            }
+        }
+
+        int[] data = list.stream().mapToInt(i->i).toArray();
         return data;
     }
 

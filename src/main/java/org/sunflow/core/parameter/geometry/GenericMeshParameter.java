@@ -26,10 +26,12 @@ public class GenericMeshParameter extends ObjectParameter {
             api.parameter("normals", "vector", "facevarying", normals);
         }
 
-        if (!faceVaryingTextures) {
-            api.parameter("uvs", "texcoord", "vertex", uvs);
-        } else {
-            api.parameter("uvs", "texcoord", "facevarying", uvs);
+        if (uvs != null) {
+            if (!faceVaryingTextures) {
+                api.parameter("uvs", "texcoord", "vertex", uvs);
+            } else {
+                api.parameter("uvs", "texcoord", "facevarying", uvs);
+            }
         }
 
         if (faceShaders != null) {

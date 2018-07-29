@@ -54,12 +54,7 @@ import org.sunflow.core.modifiers.PerlinModifier;
 import org.sunflow.core.parameter.BucketParameter;
 import org.sunflow.core.parameter.camera.CameraParameter;
 import org.sunflow.core.parameter.modifier.ModifierParameter;
-import org.sunflow.core.parser.RA2Parser;
-import org.sunflow.core.parser.RA3Parser;
-import org.sunflow.core.parser.SCAsciiParser;
-import org.sunflow.core.parser.SCBinaryParser;
-import org.sunflow.core.parser.SCParser;
-import org.sunflow.core.parser.ShaveRibParser;
+import org.sunflow.core.parser.*;
 import org.sunflow.core.photonmap.CausticPhotonMap;
 import org.sunflow.core.photonmap.GlobalPhotonMap;
 import org.sunflow.core.photonmap.GridPhotonMap;
@@ -299,7 +294,8 @@ public final class PluginRegistry {
 
     static {
         // parsers
-        parserPlugins.registerPlugin("sc", SCParser.class);
+        //parserPlugins.registerPlugin("sc", SCParser.class);
+        parserPlugins.registerPlugin("sc", SCNewParser.class);
         parserPlugins.registerPlugin("sca", SCAsciiParser.class);
         parserPlugins.registerPlugin("scb", SCBinaryParser.class);
         parserPlugins.registerPlugin("rib", ShaveRibParser.class);

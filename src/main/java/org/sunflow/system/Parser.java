@@ -41,6 +41,10 @@ public class Parser {
         }
     }
 
+    public void moveToLastToken() {
+        index--;
+    }
+
     public boolean peekNextToken(String tok) throws IOException {
         while (true) {
             String t = fetchNextToken();
