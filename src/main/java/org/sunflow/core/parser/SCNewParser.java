@@ -898,6 +898,7 @@ public class SCNewParser implements SceneParser {
 
             SphereParameter geometry = new SphereParameter();
             geometry.setName(name);
+            geometry.setAccel(accel);
             geometry.setInstanceParameter(instanceParameter);
 
             if (instanceParameter.getTransform() == null && !noInstance) {
@@ -920,6 +921,7 @@ public class SCNewParser implements SceneParser {
 
             CylinderParameter parameter = new CylinderParameter();
             parameter.setName(name);
+            parameter.setAccel(accel);
             parameter.setInstanceParameter(instanceParameter);
 
             parameter.setup(api);
@@ -928,6 +930,7 @@ public class SCNewParser implements SceneParser {
 
             BanchOffParameter parameter = new BanchOffParameter();
             parameter.setName(name);
+            parameter.setAccel(accel);
             parameter.setInstanceParameter(instanceParameter);
 
             parameter.setup(api);
@@ -936,6 +939,7 @@ public class SCNewParser implements SceneParser {
 
             TorusParameter geometry = new TorusParameter();
             geometry.setName(name);
+            geometry.setAccel(accel);
             geometry.setInstanceParameter(instanceParameter);
 
             p.checkNextToken("r");
@@ -946,6 +950,7 @@ public class SCNewParser implements SceneParser {
             UI.printInfo(Module.API, "Reading sphereflake ...");
             SphereFlakeParameter geometry = new SphereFlakeParameter();
             geometry.setName(name);
+            geometry.setAccel(accel);
 
             if (p.peekNextToken("level")) {
                 geometry.setLevel(p.getNextInt());
@@ -961,6 +966,8 @@ public class SCNewParser implements SceneParser {
             UI.printInfo(Module.API, "Reading plane ...");
             PlaneParameter geometry = new PlaneParameter();
             geometry.setName(name);
+            geometry.setAccel(accel);
+
             p.checkNextToken("p");
             geometry.setCenter(parsePoint());
             if (p.peekNextToken("n")) {
@@ -975,6 +982,9 @@ public class SCNewParser implements SceneParser {
         } else if (type.equals("generic-mesh")) {
             UI.printInfo(Module.API, "Reading generic mesh: %s ... ", name);
             GenericMeshParameter geometry = new GenericMeshParameter();
+            geometry.setName(name);
+            geometry.setAccel(accel);
+
             // parse vertices
             p.checkNextToken("points");
             int np = p.getNextInt();
@@ -992,7 +1002,7 @@ public class SCNewParser implements SceneParser {
                 // parse faces indices
                 //p.checkNextToken("faces");
                 nt = p.getNextInt();
-                geometry.setTriangles(parseFacesArray(nt));
+                geometry.setTriangles(parseFacesArray());
             }
 
             // parse normals
@@ -1023,6 +1033,9 @@ public class SCNewParser implements SceneParser {
         } else if (type.equals("hair")) {
             UI.printInfo(Module.API, "Reading hair curves: %s ... ", name);
             HairParameter geometry = new HairParameter();
+            geometry.setName(name);
+            geometry.setAccel(accel);
+
             p.checkNextToken("segments");
             geometry.setSegments(p.getNextInt());
             p.checkNextToken("width");
@@ -1042,6 +1055,7 @@ public class SCNewParser implements SceneParser {
             UI.printInfo(Module.API, "Reading teapot: %s ... ", name);
             TeapotParameter geometry = new TeapotParameter();
             geometry.setName(name);
+            geometry.setAccel(accel);
 
             if (p.peekNextToken("subdivs")) {
                 geometry.setSubdivs(p.getNextInt());
@@ -1066,6 +1080,8 @@ public class SCNewParser implements SceneParser {
             UI.printInfo(Module.API, "Reading julia fractal: %s ... ", name);
             JuliaParameter geometry = new JuliaParameter();
             geometry.setName(name);
+            geometry.setAccel(accel);
+
             if (p.peekNextToken("q")) {
                 geometry.setCw(p.getNextFloat());
                 geometry.setCx(p.getNextFloat());
@@ -1082,6 +1098,7 @@ public class SCNewParser implements SceneParser {
         } else if (type.equals("particles") || type.equals("dlasurface")) {
             ParticlesParameter geometry = new ParticlesParameter();
             geometry.setName(name);
+            geometry.setAccel(accel);
             if (type.equals("dlasurface")) {
                 UI.printWarning(Module.API, "Deprecated object type: \"dlasurface\" - please use \"particles\" instead");
             }
@@ -1127,6 +1144,7 @@ public class SCNewParser implements SceneParser {
             UI.printInfo(Module.API, "Reading file mesh: %s ... ", name);
             FileMeshParameter geometry = new FileMeshParameter();
             geometry.setName(name);
+            geometry.setAccel(accel);
 
             p.checkNextToken("filename");
             geometry.setFilename(p.getNextToken());
@@ -1139,6 +1157,7 @@ public class SCNewParser implements SceneParser {
             UI.printInfo(Module.API, "Reading bezier mesh: %s ... ", name);
             BezierMeshParameter geometry = new BezierMeshParameter();
             geometry.setName(name);
+            geometry.setAccel(accel);
 
             p.checkNextToken("n");
             //int nu, nv;
@@ -1548,7 +1567,7 @@ public class SCNewParser implements SceneParser {
         return data;
     }
 
-    private int[] parseFacesArray(int faces) throws IOException {
+    private int[] parseFacesArray() throws IOException {
         List<Integer> list = new ArrayList<>();
 
         while (true) {

@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.codehaus.commons.compiler.CompileException;
 import org.codehaus.janino.ClassBodyEvaluator;
 import org.codehaus.janino.Scanner;
+import org.sunflow.core.parameter.OverrideParameter;
 import org.sunflow.core.parameter.shader.ShaderParameter;
 import org.sunflow.core.Camera;
 import org.sunflow.core.CameraLens;
@@ -478,8 +479,8 @@ public class SunflowAPI implements SunflowAPIInterface {
         scene.setCamera(lookupCamera(opt.getString("camera", null)));
 
         // shader override
-        String shaderOverrideName = opt.getString("override.shader", ShaderParameter.TYPE_NONE);
-        boolean overridePhotons = opt.getBoolean("override.photons", false);
+        String shaderOverrideName = opt.getString(OverrideParameter.PARAM_OVERRIDE_SHADER, ShaderParameter.TYPE_NONE);
+        boolean overridePhotons = opt.getBoolean(OverrideParameter.PARAM_OVERRIDE_PHOTONS, false);
 
         if (shaderOverrideName.equals(ShaderParameter.TYPE_NONE))
             scene.setShaderOverride(null, false);

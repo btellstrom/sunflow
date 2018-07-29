@@ -68,21 +68,24 @@ public class Parser {
     }
 
     private String fetchNextToken() throws IOException {
-        if (bf == null)
+        if (bf == null) {
             return null;
+        }
         while (true) {
-            if (index < lineTokens.length)
+            if (index < lineTokens.length) {
                 return lineTokens[index++];
-            else if (!getNextLine())
+            } else if (!getNextLine()) {
                 return null;
+            }
         }
     }
 
     private boolean getNextLine() throws IOException {
         String line = bf.readLine();
 
-        if (line == null)
+        if (line == null) {
             return false;
+        }
 
         ArrayList<String> tokenList = new ArrayList<String>();
         String current = new String();
@@ -104,8 +107,9 @@ public class Parser {
             }
         }
 
-        if (current.length() > 0)
+        if (current.length() > 0) {
             tokenList.add(current);
+        }
         lineTokens = tokenList.toArray(new String[0]);
         index = 0;
         return true;

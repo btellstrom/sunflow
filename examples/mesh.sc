@@ -27,7 +27,7 @@ gi { type path samples 16 }
 shader {
   name simple1
   type diffuse
-  diff { "sRGB nonlinear" 0.5 0.5 0.5 }
+  diff { "sRGB nonlinear" 0.0 0.5 0.5 }
 }
 
 light {
@@ -54,12 +54,11 @@ object {
 	name "Cube"
 	points 4
 		0.0 0.0 0.0
-		1.0 0.0 0.0
-		1.0 1.0 0.0
-		0.0 1.0 0.0
+		100.0 0.0 0.0
+		100.0 100.0 0.0
+		0.0 100.0 0.0
 	faces 1
 		0 1 2 3
-        0 1 2 3
 	normals vertex
 		0.0 0.0 1.0
 		0.0 0.0 1.0
